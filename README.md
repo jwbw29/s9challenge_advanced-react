@@ -26,10 +26,10 @@ Study its functionality and also inspect the Console, the Network tab and the El
 
 ## Project Setup
 
-- Fork, clone, and `npm install`. You won't need to add any extra libraries.
-- Launch the project on a development server executing `npm run dev`.
-- Visit your widget by navigating Chrome to `http://localhost:3000`.
-- Run tests locally executing `npm test`. The test files are `codegrade_mvp.test.js` and `App.test.js`.
+- [x] Fork, clone, and `npm install`. You won't need to add any extra libraries.
+- [x] Launch the project on a development server executing `npm run dev`.
+- [x] Visit your widget by navigating Chrome to `http://localhost:3000`.
+- [x] Run tests locally executing `npm test`. The test files are `codegrade_mvp.test.js` and `App.test.js`.
 
 ## API
 
@@ -58,9 +58,7 @@ Study its functionality and also inspect the Console, the Network tab and the El
 - The coordinates of each square of the grid are as follows:
 
   ```js
-    (1, 1) (2, 1) (3, 1)
-    (1, 2) (2, 2) (3, 2)
-    (1, 3) (2, 3) (3, 3)
+  (1, 1)(2, 1)(3, 1)(1, 2)(2, 2)(3, 2)(1, 3)(2, 3)(3, 3);
   ```
 
 ❗ ALL TESTS MUST PASS
@@ -84,13 +82,13 @@ Study its functionality and also inspect the Console, the Network tab and the El
   ```js
   // A plain array can be used to represent a grid.
   // But our App component needn't track the whole array, only the index where the "B" is.
-  [null, null, null, null, "B", null, null, null, null]
-
-  // 2D arrays or matrices can be used to represent a grid, but this is not recommended in this project:
-  [[null, null, null], [null, "B", null], [null, null, null]]
+  [null, null, null, null, "B", null, null, null, null][
+    // 2D arrays or matrices can be used to represent a grid, but this is not recommended in this project:
+    ([null, null, null], [null, "B", null], [null, null, null])
+  ];
 
   // A string also could work, but strings in JS are immutable making this approach inconvenient:
-  "xxxxBxxxx"
+  ("xxxxBxxxx");
   ```
 
 - "Product" works hard designing the messages: we must reproduce them faithfully, down to the last comma.
