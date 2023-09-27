@@ -35,9 +35,9 @@ export default class AppClass extends React.Component {
     this.setState({
       indexValue: initialIndex,
       stepsValue: initialSteps,
+      messageValue: "", // Reset the message
     });
   };
-
   getNextIndex = (direction) => {
     const { indexValue } = this.state;
     let x = indexValue % 3;
@@ -73,8 +73,6 @@ export default class AppClass extends React.Component {
       indexValue: newIndex,
       stepsValue: newSteps,
     });
-
-    count++;
   };
 
   onChange = (evt) => {
@@ -102,6 +100,9 @@ export default class AppClass extends React.Component {
 
   onSubmit = (evt) => {
     evt.preventDefault();
+    if (!this.state.emailValue) {
+      this.setState({ messageValue: "Ouch: email is required." });
+    }
     this.postValues();
   };
 
@@ -116,11 +117,17 @@ export default class AppClass extends React.Component {
           <h3 id="steps">You moved {stepsValue} times</h3>
         </div>
         <div id="grid">
-          {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((idx) => (
-            <div key={idx} className={`square${idx === 4 ? " active" : ""}`}>
-              {idx === 4 ? "B" : null}
-            </div>
-          ))}
+          {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((idx) => {
+            const x = idx % 3;
+            const y = Math.floor(idx / 3);
+            const isActive = x === this.getXY().x && y === this.getXY().y;
+
+            return (
+              <div key={idx} className={`square${isActive ? " active" : ""}`}>
+                {isActive ? "B" : null}
+              </div>
+            );
+          })}
         </div>
         <div className="info">
           <h3 id="message">{messageValue}</h3>
