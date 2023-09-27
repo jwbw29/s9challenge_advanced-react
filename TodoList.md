@@ -11,7 +11,7 @@
     - [ ] counter works
     - [ ] on reset, b moves to 2,2 and counter goes to 0
 - [ ] form submit
-    - [ ] preventDefault
+    - [] preventDefault
     - [ ] post payload
         - [ ] email
         - [ ] don't submit unless email is valid
