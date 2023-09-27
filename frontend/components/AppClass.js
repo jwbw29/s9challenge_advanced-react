@@ -94,8 +94,12 @@ export default class AppClass extends React.Component {
 
     axios
       .post(URL, payload)
-      .then(() => console.log("Posting"))
-      .catch((err) => console.error(err));
+      .then((res) => {
+        this.setState({ messageValue: res.data.message });
+      })
+      .catch((err) => {
+        this.setState({ messageValue: err.data.message });
+      });
   };
 
   onSubmit = (evt) => {
