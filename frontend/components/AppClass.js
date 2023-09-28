@@ -99,7 +99,7 @@ export default class AppClass extends React.Component {
       })
       //// NEED TO GET THE 403 RESPONSE MESSAGE TO APPEAR /////
       .catch((err) => {
-        this.setState({ messageValue: err.data.message });
+        this.setState({ messageValue: err.response.data.message });
       });
   };
 
@@ -109,6 +109,7 @@ export default class AppClass extends React.Component {
       this.setState({ messageValue: "Ouch: email is required." });
     }
     this.postValues();
+    this.setState({ ...this.state, emailValue: "" });
   };
 
   render() {
