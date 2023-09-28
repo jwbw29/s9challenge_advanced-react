@@ -11,12 +11,12 @@
     - [x] coordinates display coordinates of B/active
     - [x] counter works
     - [x] on reset, b moves to 2,2 and counter goes to 0
-- [ ] form submit
+- [x] form submit
     - [x] preventDefault
     - [x] post payload
         - [x] email
         - [x] don't submit unless email is valid
-        - [x ] if email === foo@bar.baz --> should get a 403 Forbidden (but everything else seems to work)
+        - [x] if email === foo@bar.baz --> should get a 403 Forbidden (but everything else seems to work)
         - [x] count/steps
         - [x] x value
         - [x] y value
