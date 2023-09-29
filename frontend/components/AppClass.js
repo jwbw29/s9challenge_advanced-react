@@ -36,6 +36,7 @@ export default class AppClass extends React.Component {
       indexValue: initialIndex,
       stepsValue: initialSteps,
       messageValue: "", // Reset the message
+      emailValue: "",
     });
   };
   getNextIndex = (direction) => {
@@ -65,17 +66,22 @@ export default class AppClass extends React.Component {
   };
 
   move = (direction) => {
-    const { stepsValue } = this.state;
+    const { stepsValue, indexValue } = this.state;
     const newIndex = this.getNextIndex(direction);
     const newSteps = stepsValue + 1;
 
-    // if (newIndex === this.indexValue) console.log(true)
-
-    //// ELSE
-    this.setState({
-      indexValue: newIndex,
-      stepsValue: newSteps,
-    });
+    if (indexValue === newIndex) {
+      // move should not happen and message should display
+      this.setState({
+        messageValue: `You can't go ${direction}`,
+      });
+    } else {
+      // normal move process should happen
+      this.setState({
+        indexValue: newIndex,
+        stepsValue: newSteps,
+      });
+    }
   };
 
   onChange = (evt) => {
@@ -122,7 +128,9 @@ export default class AppClass extends React.Component {
       <div id="wrapper" className={className}>
         <div className="info">
           <h3 id="coordinates">{this.getXYMessage()}</h3>
-          <h3 id="steps">You moved {stepsValue} times</h3>
+          <h3 id="steps">
+            You moved {stepsValue} {stepsValue === 1 ? "time" : "times"}
+          </h3>
         </div>
         <div id="grid">
           {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((idx) => {
