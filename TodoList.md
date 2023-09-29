@@ -21,11 +21,11 @@
     - [x] count/steps
     - [x] x value
     - [x] y value
-- [ ] validation to stay inside the box
-  - [ ] if x == 3, messageValue = "You can't go right" & at next click messageValue = ''
-  - [ ] if x == 1, messageValue = "You can't go left" & at next click messageValue = ''
-  - [ ] if y == 1, messageValue = "You can't go up" & at next click messageValue = ''
-  - [ ] if y == 3, messageValue = "You can't go down" & at next click messageValue = ''
+- [x] validation to stay inside the box
+  - [x] if x == 3, messageValue = "You can't go right" & at next click messageValue = ''
+  - [x] if x == 1, messageValue = "You can't go left" & at next click messageValue = ''
+  - [x] if y == 1, messageValue = "You can't go up" & at next click messageValue = ''
+  - [x] if y == 3, messageValue = "You can't go down" & at next click messageValue = ''
 
 ## Functional
 
