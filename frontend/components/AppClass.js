@@ -69,6 +69,9 @@ export default class AppClass extends React.Component {
     const newIndex = this.getNextIndex(direction);
     const newSteps = stepsValue + 1;
 
+    // if (newIndex === this.indexValue) console.log(true)
+
+    //// ELSE
     this.setState({
       indexValue: newIndex,
       stepsValue: newSteps,

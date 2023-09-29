@@ -81,3 +81,13 @@ invalidMessage += "up";
 this.setState({ messageValue: invalidMessage });
 }
 };
+
+//// GABES TIPS
+
+- If after moving, coordinates are the same as before moving, you mustn't increment the step count, and you must set the error message, "you can't go the direction you tried to go"...
+
+- If the new index is the same as the old index, then it didn't move because it was at the edge
+
+- you're just rushing to increase the step count, and the index
+
+- Before setting state, be like, wait a minute: if the new index is the same as the old index, then the "B" didn't move!
