@@ -82,7 +82,7 @@ this.setState({ messageValue: invalidMessage });
 }
 };
 
-//// GABES TIPS
+//// GABE'S TIPS
 
 - If after moving, coordinates are the same as before moving, you mustn't increment the step count, and you must set the error message, "you can't go the direction you tried to go"...
 

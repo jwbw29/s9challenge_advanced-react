@@ -11,15 +11,18 @@ const URL = "http://localhost:9000/api/result";
 const initialState = {
   index: initialIndex,
   steps: initialSteps,
+  email: initialEmail,
+  message: initialMessage,
 };
 
 export default class AppClass extends React.Component {
   state = {
-    emailValue: initialState.message,
+    emailValue: initialState.email,
     indexValue: initialState.index,
     stepsValue: initialState.steps,
     messageValue: initialState.message,
   };
+
   getXY = () => {
     const x = this.state.indexValue % 3;
     const y = Math.floor(this.state.indexValue / 3);
