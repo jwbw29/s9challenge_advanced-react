@@ -1,78 +1,134 @@
-import React from 'react'
+import React from "react";
+import { render, screen, waitFor } from "@testing-library/react";
+import "@testing-library/jest-dom/extend-expect";
+import userEvent from "@testing-library/user-event";
+import ContactForm from "./ContactForm";
 
-// Suggested initial states
-const initialMessage = ''
-const initialEmail = ''
-const initialSteps = 0
-const initialIndex = 4 // the index the "B" is at
+test("renders without errors", () => {
+  render(<ContactForm />);
+});
 
-export default function AppFunctional(props) {
-  // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
-  // You can delete them and build your own logic from scratch.
+test("renders the contact form header", () => {
+  render(<ContactForm />);
+  const header = screen.queryByText(/contact form/i);
 
-  function getXY() {
-    // It it not necessary to have a state to track the coordinates.
-    // It's enough to know what index the "B" is at, to be able to calculate them.
-  }
+  //in document
+  expect(header).toBeInTheDocument();
+  //truth
+  expect(header).toBeTruthy();
 
-  function getXYMessage() {
-    // It it not necessary to have a state to track the "Coordinates (2, 2)" message for the user.
-    // You can use the `getXY` helper above to obtain the coordinates, and then `getXYMessage`
-    // returns the fully constructed string.
-  }
+  // has text content
+  expect(header).toHaveTextContent(/contact form/i);
+});
 
-  function reset() {
-    // Use this helper to reset all states to their initial values.
-  }
+test("renders ONE error message if user enters less then 5 characters into firstname.", async () => {
+  render(<ContactForm />);
 
-  function getNextIndex(direction) {
-    // This helper takes a direction ("left", "up", etc) and calculates what the next index
-    // of the "B" would be. If the move is impossible because we are at the edge of the grid,
-    // this helper should return the current index unchanged.
-  }
+  const firstNameField = screen.getByLabelText(/first name*/i);
+  userEvent.type(firstNameField, "123");
 
-  function move(evt) {
-    // This event handler can use the helper above to obtain a new index for the "B",
-    // and change any states accordingly.
-  }
+  const errorMessages = await screen.findAllByTestId("error");
+  expect(errorMessages).toHaveLength(1);
+});
 
-  function onChange(evt) {
-    // You will need this to update the value of the input.
-  }
+test("renders THREE error messages if user enters no values into any fields.", async () => {
+  render(<ContactForm />);
 
-  function onSubmit(evt) {
-    // Use a POST request to send a payload to the server.
-  }
+  const submitButton = screen.getByRole("button");
+  userEvent.click(submitButton);
 
-  return (
-    <div id="wrapper" className={props.className}>
-      <div className="info">
-        <h3 id="coordinates">Coordinates (2, 2)</h3>
-        <h3 id="steps">You moved 0 times</h3>
-      </div>
-      <div id="grid">
-        {
-          [0, 1, 2, 3, 4, 5, 6, 7, 8].map(idx => (
-            <div key={idx} className={`square${idx === 4 ? ' active' : ''}`}>
-              {idx === 4 ? 'B' : null}
-            </div>
-          ))
-        }
-      </div>
-      <div className="info">
-        <h3 id="message"></h3>
-      </div>
-      <div id="keypad">
-        <button id="left">LEFT</button>
-        <button id="up">UP</button>
-        <button id="right">RIGHT</button>
-        <button id="down">DOWN</button>
-        <button id="reset">reset</button>
-      </div>
-      <form>
-        <input id="email" type="email" placeholder="type email"></input>
-        <input id="submit" type="submit"></input>
-      </form>
-    </div>
-  )
-}
+  await waitFor(() => {
+    const errorMessages = screen.queryAllByTestId("error");
+    expect(errorMessages).toHaveLength(3);
+  });
+});
+
+test("renders ONE error message if user enters a valid first name and last name but no email.", async () => {
+  render(<ContactForm />);
+
+  const firstNameField = screen.getByLabelText(/first name*/i);
+  const lastNameField = screen.getByLabelText(/last name*/i);
+  const submitButton = screen.getByRole("button");
+
+  userEvent.type(firstNameField, "123456");
+  userEvent.type(lastNameField, "123");
+  userEvent.click(submitButton);
+
+  const errorMessages = await screen.findAllByTestId("error");
+  expect(errorMessages).toHaveLength(1);
+});
+
+test('renders "email must be a valid email address" if an invalid email is entered', async () => {
+  render(<ContactForm />);
+  const emailField = screen.getByLabelText(/email*/i);
+
+  userEvent.type(emailField, "sdf@asdf");
+
+  const errorMessage = await screen.findByText(
+    /email must be a valid email address/i
+  );
+  expect(errorMessage).toBeInTheDocument();
+});
+
+test('renders "lastName is a required field" if an last name is not entered and the submit button is clicked', async () => {
+  render(<ContactForm />);
+  const submitButton = screen.getByRole("button");
+  userEvent.click(submitButton);
+
+  const errorMessage = await screen.findByText(/lastName is a required field/i);
+  expect(errorMessage).toBeInTheDocument();
+});
+
+test("renders all firstName, lastName and email text when submitted. Does NOT render message if message is not submitted.", async () => {
+  render(<ContactForm />);
+  const firstNameField = screen.getByLabelText(/first name*/i);
+  const lastNameField = screen.getByLabelText(/last name*/i);
+  const emailField = screen.getByLabelText(/email*/i);
+  const submitButton = screen.getByRole("button");
+
+  userEvent.type(firstNameField, "warren");
+  userEvent.type(lastNameField, "longmire");
+  userEvent.type(emailField, "longmire@email.com");
+
+  userEvent.click(submitButton);
+
+  await waitFor(() => {
+    const firstNameDisplay = screen.queryByText("warren");
+    const lastNameDisplay = screen.queryByText("longmire");
+    const emailDisplay = screen.queryByText("longmire@email.com");
+    const messageDisplay = screen.queryByTestId("messageDisplay");
+
+    expect(firstNameDisplay).toBeInTheDocument();
+    expect(lastNameDisplay).toBeInTheDocument();
+    expect(emailDisplay).toBeInTheDocument();
+    expect(messageDisplay).not.toBeInTheDocument();
+  });
+});
+
+test("renders all fields text when all fields are submitted.", async () => {
+  render(<ContactForm />);
+  const firstNameField = screen.getByLabelText(/first name*/i);
+  const lastNameField = screen.getByLabelText(/last name*/i);
+  const emailField = screen.getByLabelText(/email*/i);
+  const messageField = screen.getByLabelText(/message/i);
+  const submitButton = screen.getByRole("button");
+
+  userEvent.type(firstNameField, "warren");
+  userEvent.type(lastNameField, "longmire");
+  userEvent.type(emailField, "longmire@email.com");
+  userEvent.type(messageField, "anything goes here");
+
+  userEvent.click(submitButton);
+
+  await waitFor(() => {
+    const firstNameDisplay = screen.queryByText("warren");
+    const lastNameDisplay = screen.queryByText("longmire");
+    const emailDisplay = screen.queryByText("longmire@email.com");
+    const messageDisplay = screen.queryByText("anything goes here");
+
+    expect(firstNameDisplay).toBeInTheDocument();
+    expect(lastNameDisplay).toBeInTheDocument();
+    expect(emailDisplay).toBeInTheDocument();
+    expect(messageDisplay).toBeInTheDocument();
+  });
+});
