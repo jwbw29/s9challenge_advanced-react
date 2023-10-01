@@ -10,61 +10,53 @@ test("sanity", () => {
 });
 
 // write 5 tests
-//Test that the visible texts in headings, buttons, links... render on the screen
+// [x] Test that the visible texts in headings, buttons, links... render on the screen
 
 //1
-test("renders without errors", () => {
+test("1. renders without errors", () => {
   render(<AppFunctional />);
 });
 
 //2
-test("renders initial states as expected", () => {
+test("2. coordinates and steps render to the screen", () => {
   render(<AppFunctional />);
   const coordinates = screen.queryByText(/coordinates/i);
   const steps = screen.queryByText(/you moved 0 times/i);
+
+  expect(coordinates).toBeInTheDocument();
+  expect(steps).toBeInTheDocument();
+});
+
+//3
+test("3. directions buttons render to the screen", () => {
+  render(<AppFunctional />);
   const up = screen.queryByText(/up/i);
   const left = screen.queryByText(/left/i);
   const down = screen.queryByText(/down/i);
   const right = screen.queryByText(/right/i);
-  const reset = screen.queryByText(/reset/i);
-  const email = screen.getByPlaceholderText(/type email/i);
 
-  //in document
-  expect(coordinates).toBeInTheDocument();
-  expect(steps).toBeInTheDocument();
   expect(up).toBeInTheDocument();
   expect(left).toBeInTheDocument();
   expect(down).toBeInTheDocument();
   expect(right).toBeInTheDocument();
-  expect(reset).toBeInTheDocument();
-  expect(email).toBeInTheDocument();
-});
-
-//3
-//// GOTTA FIX THIS, struggling to locate the submit button and also not sure if fireEvent will suffice as a replacement for userEvent /////
-test("email input and submit button work", async () => {
-  render(<AppFunctional />);
-  const submitButton = screen.getByText(/submit/i);
-  const input = screen.getByRole("input");
-
-  fireEvent.type(input, "justinbyrd7@gmail.com");
-  fireEvent.click(submitButton);
-
-  await waitFor(() => {
-    const messageDisplay = screen.queryByText("justinbyrd7");
-
-    expect(messageDisplay).toBeInTheDocument;
-  });
 });
 
 //4
-test("", () => {
+test("4. reset renders to the screen", () => {
   render(<AppFunctional />);
+  const reset = screen.queryByText(/reset/i);
+
+  expect(reset).toBeInTheDocument();
 });
 
 //5
-test("", () => {
+test("5. typing in the email input changes the value of the input", () => {
   render(<AppFunctional />);
+  const emailInput = screen.getByPlaceholderText("type email");
+
+  fireEvent.change(emailInput, { target: { value: "test@example.com" } });
+
+  expect(emailInput.value).toBe("test@example.com");
 });
 
-//Test that typing on the input results in its value changing to the entered text
+// [x] Test that typing on the input results in its value changing to the entered text
